@@ -757,79 +757,6 @@ input[type="file"] { display: none; }
 
 
 <!-- ════════════════════════════════
-     FOTOS
-════════════════════════════════ -->
-<div class="section">
-  <p class="section-label">Nuestra historia</p>
-  <h2>Momentos juntos</h2>
-  <p>Agrega sus fotos favoritas como pareja para que los invitados los conozcan.</p>
-  <div class="photo-strip">
-    <div class="photo-strip-item" style="position:relative">
-      <div class="strip-box" id="strip1" onclick="triggerStrip('strip-file1','strip1')">
-        Foto 1<br><em style="font-size:.65rem">Toca para agregar</em>
-        <span class="strip-add">+ Foto</span>
-      </div>
-    </div>
-    <div class="photo-strip-item" style="position:relative">
-      <div class="strip-box" id="strip2" onclick="triggerStrip('strip-file2','strip2')">
-        Foto 2<br><em style="font-size:.65rem">Toca para agregar</em>
-        <span class="strip-add">+ Foto</span>
-      </div>
-    </div>
-    <div class="photo-strip-item" style="grid-column:span 2;position:relative">
-      <div class="strip-box wide" id="strip3" onclick="triggerStrip('strip-file3','strip3')">
-        Foto principal de pareja<br><em style="font-size:.65rem">Toca para agregar</em>
-        <span class="strip-add">+ Foto</span>
-      </div>
-    </div>
-  </div>
-  <input type="file" id="strip-file1" accept="image/*" onchange="loadStrip(event,'strip1')">
-  <input type="file" id="strip-file2" accept="image/*" onchange="loadStrip(event,'strip2')">
-  <input type="file" id="strip-file3" accept="image/*" onchange="loadStrip(event,'strip3')">
-</div>
-
-<!-- ════════════════════════════════
-     DRESS CODE
-════════════════════════════════ -->
-<div class="section-alt">
-  <div class="inner">
-    <p class="section-label">Vestimenta</p>
-    <h2>Dress Code</h2>
-    <p>Les pedimos que acompañen la paleta de colores de nuestra boda. <strong>Etiqueta formal.</strong> Por favor evitar blanco, negro puro y rojo intenso.</p>
-    <div class="palette">
-      <div class="swatch"><div class="swatch-circle" style="background:#8B0000"></div><span class="swatch-name">Carmesí</span></div>
-      <div class="swatch"><div class="swatch-circle" style="background:#B8952A"></div><span class="swatch-name">Dorado</span></div>
-      <div class="swatch"><div class="swatch-circle" style="background:#F5F0E8"></div><span class="swatch-name">Crema</span></div>
-      <div class="swatch"><div class="swatch-circle" style="background:#8B7355"></div><span class="swatch-name">Tostado</span></div>
-      <div class="swatch"><div class="swatch-circle" style="background:#2C2C2C"></div><span class="swatch-name">Carbón</span></div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
-     REGALOS
-════════════════════════════════ -->
-<div class="section">
-  <p class="section-label">Lista de regalos</p>
-  <h2>Si desean regalarnos algo…</h2>
-  <p>Su presencia es el mejor regalo. Pero si quieren hacernos un obsequio, estas son las opciones:</p>
-
-  <div class="regalo-card">
-    <h3>💳 Transferencia bancaria</h3>
-    <p>Banco: <strong>BBVA México</strong></p>
-    <p>CLABE: <strong>012345678901234567</strong></p>
-    <p>Beneficiario: <strong>Deni & Lou Boda</strong></p>
-    <button class="copy-btn" onclick="copyText(this,'012345678901234567','Copiar CLABE')">Copiar CLABE</button>
-  </div>
-
-  <div class="regalo-card">
-    <h3>🎁 Mesa de regalos</h3>
-    <p>Tienen una mesa de regalos disponible en Liverpool con artículos seleccionados para el hogar.</p>
-    <button class="copy-btn" onclick="window.open('https://www.liverpool.com.mx','_blank')" style="margin-top:12px">Ver lista →</button>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
      UBICACIÓN / GOOGLE MAPS
 ════════════════════════════════ -->
 <div class="section">
@@ -933,21 +860,6 @@ input[type="file"] { display: none; }
       <div class="success-msg" id="rsvp-success">🎉 ¡Gracias! Ya recibimos tu confirmación. ¡Nos vemos el 4 de julio!</div>
       <div class="error-msg" id="rsvp-error">⚠️ Hubo un error. Intenta de nuevo o escríbenos por WhatsApp.</div>
     </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
-     ÁLBUM QR
-════════════════════════════════ -->
-<div class="section">
-  <p class="section-label">Álbum colaborativo</p>
-  <h2>Sube tus fotos</h2>
-  <p>El día de la boda, escanea el código QR con tu celular y sube todas las fotos que tomes. ¡Crearemos un álbum juntos!</p>
-  <div class="qr-box">
-    <div class="qr-placeholder">
-      Aquí va el<br>código QR<br>del álbum
-    </div>
-    <p class="qr-url">📸 Album compartido · Boda Deni &amp; Lou · 4 julio 2025</p>
   </div>
 </div>
 
