@@ -307,6 +307,22 @@ body {
   color: var(--dark-red); line-height: 1;
   margin: 8px 0 6px; position: relative; z-index: 1;
 }
+
+/* ── HERO COUNTDOWN ── */
+.hero-countdown {
+  display: flex; align-items: center; gap: 6px;
+  margin: 20px 0 8px; position: relative; z-index: 1;
+}
+.hcd-box { text-align: center; min-width: 52px; }
+.hcd-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; color: var(--dark-red); line-height: 1;
+  background: rgba(255,255,255,.7); border: 1px solid rgba(184,149,42,.3);
+  padding: 8px 4px; border-radius: 3px; min-width: 52px; display: block;
+}
+.hcd-label { font-size: .58rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-top: 4px; }
+.hcd-sep { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--gold); margin-bottom: 16px; }
+
 .date-badge {
   display: inline-block; border: 1px solid var(--gold);
   color: var(--gold); font-family: 'Playfair Display', serif;
@@ -581,6 +597,14 @@ footer {
 .suggestion-item:last-child { border-bottom: none; }
 .suggestion-item:hover { background: rgba(184,149,42,.08); }
 .suggestion-item strong { color: var(--crimson); }
+.guest-confirm-btn {
+  background: var(--crimson); color: #fff; border: none; cursor: pointer;
+  padding: 10px 24px; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+  font-family: 'Lato', sans-serif; border-radius: 2px; transition: background .2s;
+}
+.guest-confirm-btn:hover { background: var(--dark-red); }
+.guest-decline-btn { background: transparent; color: var(--crimson); border: 1px solid var(--crimson); }
+.guest-decline-btn:hover { background: var(--crimson); color: #fff; }
 .error-msg { display: none; background: #a04040; color: #fff; padding: 14px; text-align: center; border-radius: 3px; font-size: .85rem; margin-top: 14px; }
 
 /* ── HIDDEN INPUTS ── */
@@ -601,8 +625,8 @@ input[type="file"] { display: none; }
 <div id="video-intro">
   <!-- Video de fondo — el src apunta al archivo subido -->
   <video id="bg-video" playsinline muted loop preload="auto"
-         src="boda-video.mp4"
-         oncanplay="this.classList.add('loaded')">
+         src="boda-video.mp4" type="video/mp4"
+         oncanplay="this.classList.add('loaded')" onloadedmetadata="this.play().catch(()=>{})">
   </video>
 
   <div class="video-overlay"></div>
@@ -632,10 +656,14 @@ input[type="file"] { display: none; }
 
 <!-- AUDIO BAR -->
 <div id="audio-bar">
-  <button id="play-btn" onclick="toggleMusic()">▶</button>
+  <button id="play-btn" onclick="toggleMusic()" title="Reproducir música">▶</button>
   <span id="music-title">♪ La canción que más les guste</span>
+  <span id="music-hint" style="font-size:.62rem;opacity:.6;margin-left:4px">(toca ▶ para escuchar)</span>
 </div>
-<audio id="bg-music" loop><source src="" type="audio/mpeg"></audio>
+<!-- Pon aquí el archivo de música: puede ser música-boda.mp3 en la misma carpeta del repo -->
+<audio id="bg-music" loop preload="none">
+  <source src="musica-boda.mp3" type="audio/mpeg">
+</audio>
 
 <!-- ════════════════════════════════
      HERO — PORTADA
@@ -662,7 +690,7 @@ input[type="file"] { display: none; }
             <svg width="32" height="32" viewBox="0 0 24 24" fill="#999"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-8.5-5.5l-2.5 3-3.5-4.5L3 17h18l-5.5-7-3.5 4.5z"/></svg>
             <span>Toca para subir<br>su foto</span>
           </div>
-          <img id="hero-photo" src="" alt="Deni & Lou" style="display:none">
+          <img id="hero-photo" src="foto-pareja.jpg" alt="Deni & Lou" style="display:block" onerror="this.style.display='none';document.getElementById('hero-placeholder').style.display='flex'">
         </div>
       </div>
 
@@ -684,6 +712,17 @@ input[type="file"] { display: none; }
   <div class="hero-nuestra-boda">Nuestra Boda</div>
   <div class="gold-divider" style="margin-bottom:16px">♦</div>
   <div class="date-badge">4 · Julio · 2025</div>
+
+  <!-- COUNTDOWN INSIDE HERO -->
+  <div class="hero-countdown">
+    <div class="hcd-box"><div class="hcd-num" id="cd-days">—</div><div class="hcd-label">Días</div></div>
+    <div class="hcd-sep">:</div>
+    <div class="hcd-box"><div class="hcd-num" id="cd-hours">—</div><div class="hcd-label">Hrs</div></div>
+    <div class="hcd-sep">:</div>
+    <div class="hcd-box"><div class="hcd-num" id="cd-min">—</div><div class="hcd-label">Min</div></div>
+    <div class="hcd-sep">:</div>
+    <div class="hcd-box"><div class="hcd-num" id="cd-sec">—</div><div class="hcd-label">Seg</div></div>
+  </div>
 
   <!-- INFO -->
   <div class="info-grid">
@@ -715,21 +754,7 @@ input[type="file"] { display: none; }
   <p class="scroll-hint">↓ desplaza para ver más</p>
 </section>
 
-<!-- ════════════════════════════════
-     CUENTA REGRESIVA
-════════════════════════════════ -->
-<div class="section-alt">
-  <div class="inner">
-    <p class="section-label">La cuenta regresiva</p>
-    <h2>Faltan…</h2>
-    <div class="countdown-grid">
-      <div class="count-box"><div class="count-num" id="cd-days">—</div><div class="count-label">Días</div></div>
-      <div class="count-box"><div class="count-num" id="cd-hours">—</div><div class="count-label">Horas</div></div>
-      <div class="count-box"><div class="count-num" id="cd-min">—</div><div class="count-label">Min</div></div>
-      <div class="count-box"><div class="count-num" id="cd-sec">—</div><div class="count-label">Seg</div></div>
-    </div>
-  </div>
-</div>
+
 
 <!-- ════════════════════════════════
      FOTOS
@@ -861,6 +886,10 @@ input[type="file"] { display: none; }
       <div class="guest-card-name" id="guest-card-name"></div>
       <div class="guest-card-detail" id="guest-card-detail"></div>
       <div class="guest-card-seats" id="guest-card-seats"></div>
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="guest-confirm-btn" onclick="confirmFromSearch('si')">✓ Sí asistiré</button>
+        <button class="guest-confirm-btn guest-decline-btn" onclick="confirmFromSearch('no')">✗ No podré ir</button>
+      </div>
     </div>
     <div id="guest-not-found" class="guest-state guest-error" style="display:none">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
@@ -967,17 +996,21 @@ input[type="file"] { display: none; }
 <script>
 // ── COUNTDOWN ──
 function updateCountdown() {
-  const target = new Date('2025-07-04T15:00:00');
-  const now = new Date();
-  const diff = target - now;
+  // Fecha de la boda: 4 de julio 2025 a las 15:00 hora CDMX (UTC-6)
+  const target = new Date('2025-07-04T15:00:00-06:00');
+  const now    = new Date();
+  const diff   = target - now;
   if (diff <= 0) {
-    ['cd-days','cd-hours','cd-min','cd-sec'].forEach(id => document.getElementById(id).textContent = '0');
+    document.getElementById('cd-days').textContent  = '¡Hoy';
+    document.getElementById('cd-hours').textContent = 'es';
+    document.getElementById('cd-min').textContent   = 'el';
+    document.getElementById('cd-sec').textContent   = 'día!';
     return;
   }
-  document.getElementById('cd-days').textContent  = Math.floor(diff / 86400000);
-  document.getElementById('cd-hours').textContent = Math.floor((diff % 86400000) / 3600000);
-  document.getElementById('cd-min').textContent   = Math.floor((diff % 3600000) / 60000);
-  document.getElementById('cd-sec').textContent   = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent  = String(Math.floor(diff / 86400000)).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2,'0');
+  document.getElementById('cd-min').textContent   = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+  document.getElementById('cd-sec').textContent   = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
@@ -986,8 +1019,19 @@ setInterval(updateCountdown, 1000);
 function toggleMusic() {
   const audio = document.getElementById('bg-music');
   const btn   = document.getElementById('play-btn');
-  if (audio.paused) { audio.play().catch(()=>{}); btn.textContent = '⏸'; }
-  else              { audio.pause();               btn.textContent = '▶'; }
+  const hint  = document.getElementById('music-hint');
+  if (audio.paused) {
+    audio.play().then(() => {
+      btn.textContent = '⏸';
+      if (hint) hint.style.display = 'none';
+    }).catch(() => {
+      // autoplay blocked — show message
+      if (hint) hint.textContent = '(permite audio en tu navegador)';
+    });
+  } else {
+    audio.pause();
+    btn.textContent = '▶';
+  }
 }
 
 // ── HERO PHOTO ──
@@ -1175,6 +1219,39 @@ function toggleVideoSound() {
   video.muted = videoMuted;
   document.getElementById('sound-icon-off').style.display = videoMuted ? 'block' : 'none';
   document.getElementById('sound-icon-on').style.display  = videoMuted ? 'none'  : 'block';
+}
+
+// ── CONFIRM FROM SEARCH ──
+// Called when user taps "Sí asistiré" or "No podré ir" from the guest card
+async function confirmFromSearch(answer) {
+  const name = document.getElementById('guest-card-name').textContent;
+  const seats = document.getElementById('guest-card-seats').textContent;
+
+  // Scroll to RSVP and pre-fill
+  document.getElementById('rsvp-name').value = name;
+  selectRSVP(answer === 'si'
+    ? document.getElementById('rsvp-si')
+    : document.getElementById('rsvp-no'), answer);
+
+  // If they said yes, auto-submit with just the name (quick confirm)
+  if (answer === 'si') {
+    // Small delay so user sees the form fill
+    await new Promise(r => setTimeout(r, 300));
+    document.getElementById('rsvp-name').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Auto-set guests from card
+    const m = seats.match(/\d+/);
+    if (m) {
+      const sel = document.getElementById('rsvp-guests');
+      const val = Math.min(parseInt(m[0]), 4);
+      sel.value = val <= 3 ? String(val) : '4';
+    }
+  } else {
+    // For "no", just scroll to form so they can optionally add a message
+    setTimeout(() => {
+      document.getElementById('rsvp-name').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  }
 }
 
 </script>
