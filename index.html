@@ -809,47 +809,16 @@ input[type="file"] { display: none; }
 </div>
 
 <!-- ════════════════════════════════
-     BUSCADOR DE INVITADOS
-════════════════════════════════ -->
-<div class="section">
-  <p class="section-label">¿Estás en la lista?</p>
-  <h2>Busca tu nombre</h2>
-  <p>Escribe tu nombre para ver cuántos lugares tienes reservados y confirmar asistencia.</p>
-  <div class="guest-search-wrap">
-    <div class="guest-search-box">
-      <input type="text" id="guest-search-input" placeholder="Ej: María García…" oninput="searchGuest()" autocomplete="off">
-      <span class="search-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
-    </div>
-    <div id="guest-searching" class="guest-state" style="display:none"><div class="spinner"></div><span>Buscando…</span></div>
-    <div id="guest-found" class="guest-card" style="display:none">
-      <div class="guest-card-icon">💌</div>
-      <div class="guest-card-name" id="guest-card-name"></div>
-      <div class="guest-card-detail" id="guest-card-detail"></div>
-      <div class="guest-card-seats" id="guest-card-seats"></div>
-      <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-        <button class="guest-confirm-btn" onclick="confirmFromSearch('si')">✓ Sí asistiré</button>
-        <button class="guest-confirm-btn guest-decline-btn" onclick="confirmFromSearch('no')">✗ No podré ir</button>
-      </div>
-    </div>
-    <div id="guest-not-found" class="guest-state guest-error" style="display:none">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-      <span>No encontramos ese nombre. Verifica la ortografía o escríbenos por WhatsApp.</span>
-    </div>
-    <div id="guest-suggestions" class="suggestions-list" style="display:none"></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
      RSVP
 ════════════════════════════════ -->
 <div class="section-alt">
   <div class="inner">
-    <p class="section-label">Confirmación de asistencia</p>
-    <h2>¿Vas a venir?</h2>
-    <p>Por favor confirma antes del <strong>20 de junio de 2026</strong> para que podamos organizarnos bien.</p>
+    <p class="section-label">Confirma tu asistencia</p>
+    <h2>Confirma tu asistencia</h2>
+    <p>Por favor confirma antes del <strong>30 de junio de 2026</strong> para que podamos organizarnos bien.</p>
     <div style="margin-top:24px">
       <p style="font-size:.85rem;color:var(--muted);margin-bottom:20px">
-        Busca tu nombre arriba → toca <strong>"Sí asistiré"</strong> y listo. Solo necesitamos confirmar tu asistencia.
+        Escribe tu nombre y confirma si asistirás. ¡Solo toma un momento!
       </p>
 
       <!-- Nombre prellenado desde el buscador, no editable -->
@@ -861,7 +830,7 @@ input[type="file"] { display: none; }
 
       <!-- Fallback: si no usó el buscador -->
       <div class="field" id="rsvp-name-field">
-        <label>¿No encontraste tu nombre? Escríbelo aquí</label>
+        <label>Tu nombre completo</label>
         <input type="text" id="rsvp-name" placeholder="Tu nombre completo">
       </div>
 
@@ -985,8 +954,8 @@ function loadStrip(e, boxId) {
 }
 
 // ── CONFIG N8N — reemplaza con las URLs de tu instancia ──
-const N8N_RSVP_URL   = 'https://TU-N8N.tudominio.com/webhook/boda-rsvp';
-const N8N_GUESTS_URL = 'https://TU-N8N.tudominio.com/webhook/boda-invitados';
+const N8N_RSVP_URL   = 'https://healtmarketingmx.cloud/webhook/boda-lou';
+const N8N_GUESTS_URL = 'https://healtmarketingmx.cloud/webhook/boda-invitados';
 
 // ── RSVP ──
 // Estado actual del invitado encontrado
@@ -1020,14 +989,10 @@ async function submitRSVP() {
     if (!res.ok) throw new Error();
     showRSVPSuccess(name);
   } catch {
-    if (N8N_RSVP_URL.includes('TU-N8N')) {
-      showRSVPSuccess(name); // demo mode
-    } else {
-      document.getElementById('rsvp-error').style.display = 'block';
-      btn.disabled = false;
-      document.getElementById('rsvp-btn-text').style.display    = 'inline';
-      document.getElementById('rsvp-btn-loading').style.display = 'none';
-    }
+    document.getElementById('rsvp-error').style.display = 'block';
+    btn.disabled = false;
+    document.getElementById('rsvp-btn-text').style.display    = 'inline';
+    document.getElementById('rsvp-btn-loading').style.display = 'none';
   }
 }
 
