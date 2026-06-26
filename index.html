@@ -954,8 +954,8 @@ function loadStrip(e, boxId) {
 }
 
 // ── CONFIG N8N — reemplaza con las URLs de tu instancia ──
-const N8N_RSVP_URL   = 'https://healtmarketingmx.cloud/webhook/boda-lou';
-const N8N_GUESTS_URL = 'https://healtmarketingmx.cloud/webhook/boda-invitados';
+const N8N_RSVP_URL   = 'https://n8nproyectautomatizations-n8n.k32wjh.easypanel.host/webhook/boda-lou';
+const N8N_GUESTS_URL = 'https://n8nproyectautomatizations-n8n.k32wjh.easypanel.host/webhook/boda-invitados';
 
 // ── RSVP ──
 // Estado actual del invitado encontrado
@@ -984,9 +984,11 @@ async function submitRSVP() {
     const res = await fetch(N8N_RSVP_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      mode: 'cors',
+      credentials: 'omit',
       body: JSON.stringify(payload)
     });
-    if (!res.ok) throw new Error();
+    // n8n devuelve 200 con {success:true}
     showRSVPSuccess(name);
   } catch {
     document.getElementById('rsvp-error').style.display = 'block';
